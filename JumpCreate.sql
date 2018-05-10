@@ -141,6 +141,41 @@ ALTER SEQUENCE chatLine_id_seq OWNED BY chatLine.id;
 
 --DROP
 
+										     
+--TRIGGERS
+create or replace function create_Employer_Employee() returns trigger as
+$$
+begin
+	insert into employer values(NEW.id,0.0,0.0,0);
+	insert into employee values(NEW.id,0.0,0);
+	raise notice 'It was inserted employeer and employee';
+	return NEW;
+end;
+$$ language plpgsql;
+
+create trigger insert_Employer_Employee after insert on userjump
+for each row execute procedure create_Employer_Employee();
+										     
+										     
+										     
+CREATE OR REPLACE function updateNumJobsPosted() RETURNS trigger as
+$$
+declare 
+idUser int;
+numJobsPosted int;
+begin
+	idUser = NEW.idemployer;
+	execute 'SELECT jobsPosted FROM employer where id = ' || idUser::text
+    into numJobsPosted;
+    
+	execute 'UPDATE employer set jobsPosted = ' || (numJobsPosted+1)::text || ' WHERE id = ' || idUser::text;
+	return NEW;
+end;
+$$ language plpgsql
+CREATE TRIGGER trig_updateNumJobsPosted AFTER INSERT ON job
+for each row execute procedure updateNumJobsPosted();
+										     
+										     
 
 --Insert
 insert into userstate (state)values
@@ -235,16 +270,5 @@ insert into preferences values
 (3,2),
 (4,2);
 
---TRIGGERS
-create or replace function create_Employer_Employee() returns trigger as
-$$
-begin
-	insert into employer values(NEW.id,0.0,0.0,0);
-	insert into employee values(NEW.id,0.0,0);
-	raise notice 'It was inserted employeer and employee';
-	return NEW;
-end;
-$$ language plpgsql;
 
-create trigger insert_Employer_Employee after insert on userjump
-for each row execute procedure create_Employer_Employee();
+										     
