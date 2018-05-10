@@ -23,7 +23,7 @@ CREATE TABLE ChatLine (Id SERIAL NOT NULL, IdChat int4 NOT NULL, IdUser int4 NOT
 CREATE TABLE Comment (Id SERIAL NOT NULL, IdJob int4 NOT NULL, IdUser int4 NOT NULL, IdCommentParent int4 DEFAULT 0 NOT NULL, Description varchar(255), "Date" timestamp, PRIMARY KEY (Id));
 CREATE TABLE Employee (Id int4 NOT NULL, Ranking numeric(2, 1) NOT NULL, NumbJobsDone int4, PRIMARY KEY (Id));
 CREATE TABLE Employee_TagJump (IdEmployee int4 NOT NULL, IdTag int4 NOT NULL, PRIMARY KEY (IdEmployee, IdTag));
-CREATE TABLE EmployeeJob (IdEmployee int4 NOT NULL, IdJob int4 NOT NULL, State int4 NOT NULL, RankErE numeric(2, 1), RankEEr numeric(2, 1), Salary numeric(9, 2) NOT NULL, CounterOfer numeric(9, 2), PRIMARY KEY (IdEmployee, IdJob, State));
+CREATE TABLE EmployeeJob (IdEmployee int4 NOT NULL, IdJob int4 NOT NULL, State int4 NOT NULL, RankErE numeric(2, 1), RankEEr numeric(2, 1), Salary numeric(9, 2) NOT NULL, CounterOfer numeric(9, 2), PostedReason text DEFAULT 'Not Specified' NOT NULL, CounterOferReason varchar(100) DEFAULT 'Not Specified' NOT NULL, PRIMARY KEY (IdEmployee, IdJob));
 CREATE TABLE EmployeeState (id SERIAL NOT NULL, description varchar(100) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Employer (Id int4 NOT NULL, Ranking numeric(2, 1) NOT NULL, SpentAmount numeric(9, 2) NOT NULL, JobsPosted int4 NOT NULL, PRIMARY KEY (Id));
 CREATE TABLE FavoriteJobs (IdEmployee int4 NOT NULL, IdJob int4 NOT NULL, PRIMARY KEY (IdEmployee, IdJob));
@@ -44,6 +44,8 @@ CREATE TABLE TransactionType (id SERIAL NOT NULL, name int4 NOT NULL, descriptio
 CREATE TABLE UserJump (Id SERIAL NOT NULL, IdLocation int4 NOT NULL, IdState int4 NOT NULL, TypeNationalIdentifier int4 NOT NULL, NationalIdentifier varchar(10) NOT NULL, Name varchar(30) NOT NULL, LastName varchar(30) NOT NULL, Email varchar(30) NOT NULL UNIQUE, Password varchar(255) NOT NULL, BirthDate date NOT NULL, Direction varchar(255) NOT NULL, Gender char(1) NOT NULL, Nationality varchar(30) NOT NULL, AvailableMoney numeric(9, 2) NOT NULL, Nonce varchar(255) NOT NULL UNIQUE, rank numeric(2, 1) NOT NULL, PRIMARY KEY (Id));
 CREATE TABLE UserStaff (IdUser int4 NOT NULL, About varchar(500) NOT NULL, image text, Cellphone varchar(20) NOT NULL, PRIMARY KEY (IdUser));
 CREATE TABLE UserState (Id SERIAL NOT NULL, State varchar(10) NOT NULL, PRIMARY KEY (Id));
+
+
 
 
 
@@ -242,15 +244,13 @@ insert into employeestate values
 (default, 'Done');
 
 insert into employeejob values
-(4,2,1,null,null,50,null),
-(2,1,1,null,null,100,null),
-(2,3,1,null,null,70,null),
-(2,3,3,null,null,80,null),
-(3,2,2,null,null,50,null),
-(3,3,2,null,null,90,null),
-(4,3,3,null,null,50,null);
-
-
+(4,2,1,null,null,50,null,default,default),
+(2,1,1,null,null,100,null,default,default),
+(2,3,1,null,null,70,null,default,default),
+(3,2,2,null,null,50,null,default,default),
+(3,3,2,null,null,90,null,default,default),
+(4,3,3,null,null,50,null,default,default);
+ 
 insert into favoritejobs values
 (1,1),
 (1,2),
@@ -279,4 +279,3 @@ insert into preferences values
 (4,2);
 
 
-										     
