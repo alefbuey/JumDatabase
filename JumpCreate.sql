@@ -41,9 +41,10 @@ CREATE TABLE Preferences (idTag int4 NOT NULL, IdUser int4 NOT NULL, PRIMARY KEY
 CREATE TABLE TagJump (Id SERIAL NOT NULL, Name varchar(50) NOT NULL, Description varchar(100), CategoryId int4 NOT NULL, PRIMARY KEY (Id));
 CREATE TABLE TransactionJump (id SERIAL NOT NULL, idUser int4 NOT NULL, Idtype int4 NOT NULL, PRIMARY KEY (id));
 CREATE TABLE TransactionType (id SERIAL NOT NULL, name int4 NOT NULL, description int4 NOT NULL, PRIMARY KEY (id));
-CREATE TABLE UserJump (Id SERIAL NOT NULL, IdLocation int4, IdState int4, TypeNationalIdentifier int4, NationalIdentifier varchar(10), Name varchar(30) NOT NULL, LastName varchar(30) NOT NULL, Email varchar(30) NOT NULL UNIQUE, Password varchar(255) NOT NULL, BirthDate date NOT NULL, Direction varchar(255), Gender char(1) NOT NULL, Nationality varchar(30), AvailableMoney numeric(9, 2), Nonce varchar(255) NOT NULL UNIQUE, rank numeric(2, 1), PRIMARY KEY (Id));
+CREATE TABLE UserJump (Id SERIAL NOT NULL, IdLocation int4 NOT NULL, IdState int4 NOT NULL, TypeNationalIdentifier int4 NOT NULL, NationalIdentifier varchar(10) NOT NULL, Name varchar(30) NOT NULL, LastName varchar(30) NOT NULL, Email varchar(30) NOT NULL UNIQUE, Password varchar(255) NOT NULL, BirthDate date NOT NULL, Direction varchar(255) NOT NULL, Gender char(1) NOT NULL, Nationality varchar(30) NOT NULL, AvailableMoney numeric(9, 2) NOT NULL, Nonce varchar(255) NOT NULL UNIQUE, rank numeric(2, 1) NOT NULL, PRIMARY KEY (Id));
 CREATE TABLE UserStaff (IdUser int4 NOT NULL, About varchar(500) NOT NULL, image text, Cellphone varchar(20) NOT NULL, PRIMARY KEY (IdUser));
 CREATE TABLE UserState (Id SERIAL NOT NULL, State varchar(10) NOT NULL, PRIMARY KEY (Id));
+
 
 
 
@@ -171,7 +172,7 @@ begin
 	execute 'UPDATE employer set jobsPosted = ' || (numJobsPosted+1)::text || ' WHERE id = ' || idUser::text;
 	return NEW;
 end;
-$$ language plpgsql
+$$ language plpgsql;
 CREATE TRIGGER trig_updateNumJobsPosted AFTER INSERT ON job
 for each row execute procedure updateNumJobsPosted();
 										     
@@ -205,19 +206,17 @@ insert into UserStaff values
 ','0984657213');
 
 
-insert into Employee values
-(1,4.5,8),
-(2,3.5,9),
-(3,5.0,15),
-(4,4.3,8),
-(5,2.5,2);
+update Employee set ranking = 4.5, numbjobsdone = 8 where id = 1;
+update Employee set ranking = 3.5, numbjobsdone = 9 where id = 2;
+update Employee set ranking = 5.0, numbjobsdone = 15 where id = 3;
+update Employee set ranking = 4.3, numbjobsdone = 8 where id = 4;
+update Employee set ranking = 2.5, numbjobsdone = 2 where id = 5;
 
-insert into Employer values
-(1,2.5,1500.00,2),
-(2,4.5,2500.00,3),
-(3,3.0,3000.00,4),
-(4,2.3,500.00,1),
-(5,4.5,10000.0,8);
+update Employer set ranking = 2.5, spentamount = 1500.00, jobsposted = 2 where id = 1;
+update Employer set ranking = 4.5, spentamount = 2500.00, jobsposted = 3 where id = 2;
+update Employer set ranking = 3.5, spentamount = 3000.00, jobsposted = 4 where id = 3;
+update Employer set ranking = 2.3, spentamount = 500.00, jobsposted = 1 where id = 4;
+update Employer set ranking = 4.5, spentamount = 10000.00, jobsposted = 8 where id = 5;
 
 insert into jobState values 
 (default, 'Posted'),
