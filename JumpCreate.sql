@@ -269,5 +269,4 @@ insert into preferences values
 (3,2),
 (4,2);
 
-
 										     
