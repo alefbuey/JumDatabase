@@ -42,8 +42,10 @@ CREATE TABLE TagJump (Id SERIAL NOT NULL, Name varchar(50) NOT NULL, Description
 CREATE TABLE TransactionJump (id SERIAL NOT NULL, idUser int4 NOT NULL, Idtype int4 NOT NULL, PRIMARY KEY (id));
 CREATE TABLE TransactionType (id SERIAL NOT NULL, name int4 NOT NULL, description int4 NOT NULL, PRIMARY KEY (id));
 CREATE TABLE UserJump (Id SERIAL NOT NULL, IdLocation int4 NOT NULL, IdState int4 NOT NULL, TypeNationalIdentifier int4 NOT NULL, NationalIdentifier varchar(10) NOT NULL, Name varchar(30) NOT NULL, LastName varchar(30) NOT NULL, Email varchar(30) NOT NULL UNIQUE, Password varchar(255) NOT NULL, BirthDate date NOT NULL, Direction varchar(255) NOT NULL, Gender char(1) NOT NULL, Nationality varchar(30) NOT NULL, AvailableMoney numeric(9, 2) NOT NULL, Nonce varchar(255) NOT NULL UNIQUE, rank numeric(2, 1) NOT NULL, PRIMARY KEY (Id));
-CREATE TABLE UserStaff (IdUser int4 NOT NULL, About varchar(500) NOT NULL, image text, Cellphone varchar(20) NOT NULL, PRIMARY KEY (IdUser));
+CREATE TABLE UserStaff (IdUser int4 NOT NULL, About varchar(500) DEFAULT 'Not Info' NOT NULL, image text DEFAULT '/opt/PostgreSQL/images/profile/2.jpg' NOT NULL, Cellphone varchar(20) DEFAULT 'Not Info' NOT NULL, PRIMARY KEY (IdUser));
 CREATE TABLE UserState (Id SERIAL NOT NULL, State varchar(10) NOT NULL, PRIMARY KEY (Id));
+
+
 
 
 
@@ -147,18 +149,20 @@ ALTER SEQUENCE chatLine_id_seq OWNED BY chatLine.id;
 
 										     
 --TRIGGERS
-create or replace function create_Employer_Employee() returns trigger as
+
+create or replace function create_Employer_Employee_Staff() returns trigger as
 $$
 begin
 	insert into employer values(NEW.id,0.0,0.0,0);
 	insert into employee values(NEW.id,0.0,0);
-	raise notice 'It was inserted employeer and employee';
+	insert into userstaff values(NEW.id,default,default,default);
+	raise notice 'It was inserted employeer, employee and staff';
 	return NEW;
 end;
 $$ language plpgsql;
 
 create trigger insert_Employer_Employee after insert on userjump
-for each row execute procedure create_Employer_Employee();
+for each row execute procedure create_Employer_Employee_Staff();
 										     
 										     
 										     
@@ -178,8 +182,7 @@ end;
 $$ language plpgsql;
 CREATE TRIGGER trig_updateNumJobsPosted AFTER INSERT ON job
 for each row execute procedure updateNumJobsPosted();
-										     
-										     
+									     
 
 --Insert
 insert into userstate (state)values
@@ -204,10 +207,9 @@ insert into UserJump(idLocation,idstate,typeNationalIdentifier,nationalidentifie
 (2,1,2,'198952358','Enrique','Rivera','erivera879@gmail.com','e879','2000-05-17','Central Park','M','American',50.00,'U9D0E',4.7),
 (3,1,1,'161698726','Jaime','Alban','jaimealba451@gmail.com','j451','1996-07-21','Iglesia de Veracruz','M','Colombian',700.00,'G79W5E',4.0);
 
-insert into UserStaff values
-(2,'Estudie en Yachay Tech. Ingeniero gradudado con conocimientos en Programacion Web, Inteligencia Artificial. Me considero una persona capaz de tomar nuevos retos e iniciativas','/opt/PostgreSQL/images/profile/2.jpg
-','0984657213');
-
+update UserStaff set 
+	about = 'Estudie en Yachay Tech. Ingeniero gradudado con conocimientos en Programacion Web, Inteligencia Artificial. Me considero una persona capaz de tomar nuevos retos e iniciativas',
+	image = '0984657213';
 
 update Employee set ranking = 4.5, numbjobsdone = 8 where id = 1;
 update Employee set ranking = 3.5, numbjobsdone = 9 where id = 2;
