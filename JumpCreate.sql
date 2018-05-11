@@ -208,7 +208,7 @@ insert into UserJump(idLocation,idstate,typeNationalIdentifier,nationalidentifie
 
 update UserStaff set 
 	about = 'Estudie en Yachay Tech. Ingeniero gradudado con conocimientos en Programacion Web, Inteligencia Artificial. Me considero una persona capaz de tomar nuevos retos e iniciativas',
-	image = '0984657213'
+	cellphone = '0984657213'
 	where id = 2;
 
 update Employee set ranking = 4.5, numbjobsdone = 8 where id = 1;
