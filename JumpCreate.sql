@@ -54,8 +54,6 @@ CREATE TABLE UserState (Id SERIAL NOT NULL, State varchar(10) NOT NULL, PRIMARY 
 
 
 
-
-
 --Change serial with int
 ALTER TABLE Category ALTER COLUMN id TYPE int4; 
 ALTER TABLE Chat ALTER COLUMN id TYPE int4;
@@ -149,7 +147,6 @@ ALTER SEQUENCE chatLine_id_seq OWNED BY chatLine.id;
 
 										     
 --TRIGGERS
-
 create or replace function create_Employer_Employee_Staff() returns trigger as
 $$
 begin
@@ -163,6 +160,7 @@ $$ language plpgsql;
 
 create trigger insert_Employer_Employee after insert on userjump
 for each row execute procedure create_Employer_Employee_Staff();
+									
 										     
 										     
 										     
@@ -182,7 +180,8 @@ end;
 $$ language plpgsql;
 CREATE TRIGGER trig_updateNumJobsPosted AFTER INSERT ON job
 for each row execute procedure updateNumJobsPosted();
-									     
+										     
+										     
 
 --Insert
 insert into userstate (state)values
@@ -209,7 +208,8 @@ insert into UserJump(idLocation,idstate,typeNationalIdentifier,nationalidentifie
 
 update UserStaff set 
 	about = 'Estudie en Yachay Tech. Ingeniero gradudado con conocimientos en Programacion Web, Inteligencia Artificial. Me considero una persona capaz de tomar nuevos retos e iniciativas',
-	image = '0984657213';
+	image = '0984657213'
+	where id = 2;
 
 update Employee set ranking = 4.5, numbjobsdone = 8 where id = 1;
 update Employee set ranking = 3.5, numbjobsdone = 9 where id = 2;
@@ -279,8 +279,4 @@ insert into preferences values
 (2,2),
 (3,2),
 (4,2);
-
-
-
-
 
