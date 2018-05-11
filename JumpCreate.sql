@@ -181,7 +181,31 @@ $$ language plpgsql;
 CREATE TRIGGER trig_updateNumJobsPosted AFTER INSERT ON job
 for each row execute procedure updateNumJobsPosted();
 										     
-										     
+				
+				
+CREATE OR REPLACE function updateNumVacanciesWhenApply() RETURNS trigger as
+$$
+declare 
+idJob int;
+oldNumVacancies  int;
+newNumVacancies int;
+begin
+
+	idjob = NEW.idjob;
+	if NEW.state = 2 then
+    	execute 'SELECT numbervacancies FROM job WHERE id = ' || idjob::text
+        into oldNumVacancies;
+        newNumVacancies := oldNumVacancies - 1;
+    	execute 'UPDATE job SET numbervacancies = ' || newNumVacancies::text ||' WHERE id = ' || idJob::text ;
+    end if;
+	return NEW;
+end;
+$$ language plpgsql;
+CREATE TRIGGER trig_updateNumVacanciesWhenApply AFTER UPDATE ON employeejob
+for each row execute procedure updateNumVacanciesWhenApply();
+				
+				
+				
 
 --Insert
 insert into userstate (state)values
