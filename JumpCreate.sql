@@ -23,7 +23,7 @@ CREATE TABLE ChatLine (Id SERIAL NOT NULL, IdChat int4 NOT NULL, IdUser int4 NOT
 CREATE TABLE Comment (Id SERIAL NOT NULL, IdJob int4 NOT NULL, IdUser int4 NOT NULL, IdCommentParent int4 DEFAULT 0 NOT NULL, Description varchar(255), "Date" timestamp, PRIMARY KEY (Id));
 CREATE TABLE Employee (Id int4 NOT NULL, Ranking numeric(2, 1) NOT NULL, NumbJobsDone int4, PRIMARY KEY (Id));
 CREATE TABLE Employee_TagJump (IdEmployee int4 NOT NULL, IdTag int4 NOT NULL, PRIMARY KEY (IdEmployee, IdTag));
-CREATE TABLE EmployeeJob (IdEmployee int4 NOT NULL, IdJob int4 NOT NULL, State int4 NOT NULL, RankErE numeric(2, 1), RankEEr numeric(2, 1), Salary numeric(9, 2) NOT NULL, CounterOfer numeric(9, 2), PostedReason text DEFAULT 'Not Specified' NOT NULL, CounterOferReason varchar(100) DEFAULT 'Not Specified' NOT NULL, PRIMARY KEY (IdEmployee, IdJob));
+CREATE TABLE EmployeeJob (IdEmployee int4 NOT NULL, IdJob int4 NOT NULL, State int4 NOT NULL, RankErE numeric(2, 1), RankEEr numeric(2, 1), Salary numeric(9, 2) NOT NULL, CounterOffer numeric(9, 2), PostedReason text DEFAULT 'Not Specified' NOT NULL, CounterOfferReason varchar(100) DEFAULT 'Not Specified' NOT NULL, PRIMARY KEY (IdEmployee, IdJob));
 CREATE TABLE EmployeeState (id SERIAL NOT NULL, description varchar(100) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Employer (Id int4 NOT NULL, Ranking numeric(2, 1) NOT NULL, SpentAmount numeric(9, 2) NOT NULL, JobsPosted int4 NOT NULL, PRIMARY KEY (Id));
 CREATE TABLE FavoriteJobs (IdEmployee int4 NOT NULL, IdJob int4 NOT NULL, PRIMARY KEY (IdEmployee, IdJob));
